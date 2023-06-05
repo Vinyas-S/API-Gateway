@@ -35,6 +35,7 @@ async function signin(data){
             throw new AppError('Invalid password', StatusCodes.BAD_REQUEST)
         }
         const jwt = Auth.createToken({id:user.id, email: user.email});
+        
         return jwt;
     } catch (error) {
         if(error instanceof AppError){
@@ -50,6 +51,7 @@ async function isAuthenticated(token){
     try {
         if(!token) new AppError('Missing jwt token',StatusCodes.BAD_REQUEST);
         const response = Auth.verifyToken(token);
+        console.log("verified token",response)
         const user = await userRepo.get(response.id);
         if(!user){
            throw new AppError('user not found',StatusCodes.NOT_FOUND);
